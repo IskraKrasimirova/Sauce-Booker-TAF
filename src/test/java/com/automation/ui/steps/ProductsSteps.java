@@ -16,12 +16,15 @@ import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class ProductsSteps {
+    private final ScenarioContext scenarioContext;
     private final WebDriver driver;
     private final ProductsPage productsPage;
     private final ProductDetailsPage productDetailsPage;
     private final CartPage cartPage;
-    private final ScenarioContext scenarioContext;
 
     public ProductsSteps(ScenarioContext scenarioContext) {
         this.scenarioContext = scenarioContext;
@@ -63,6 +66,21 @@ public class ProductsSteps {
     @And("I add the product to the cart from the product details page")
     public void iAddTheProductToTheCartFromTheProductDetailsPage() {
         productDetailsPage.addProductToCart();
+    }
+
+    @When("I add multiple products to the cart")
+    public void iAddMultipleProductsToTheCart() {
+        int productsCount = productsPage.getProducts().size();
+        List<Integer> selectedIndices = ProductSelectionHelper.getRandomProductIndices(productsCount, 3);
+
+        List<Product> selectedProducts = new ArrayList<>();
+
+        for (int index : selectedIndices) {
+            Product product = productsPage.addProductToCart(index);
+            selectedProducts.add(product);
+        }
+
+        scenarioContext.set(ContextConstants.SELECTED_PRODUCTS, selectedProducts);
     }
 
     @Then("the selected product should be marked as added")

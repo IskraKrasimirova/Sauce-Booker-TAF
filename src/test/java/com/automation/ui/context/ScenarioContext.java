@@ -1,6 +1,7 @@
 package com.automation.ui.context;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class ScenarioContext {
@@ -12,5 +13,10 @@ public class ScenarioContext {
 
     public <T> T get(String key, Class<T> type) {
         return type.cast(data.get(key));
+    }
+
+    @SuppressWarnings("unchecked")
+    public <T> List<T> getList(String key) {
+        return (List<T>) data.get(key);
     }
 }

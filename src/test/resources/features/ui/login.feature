@@ -10,6 +10,7 @@ Feature: Login
     When I log in with valid credentials
     Then I should be redirected to the Products page
 
+  @regression @validation
   Scenario Outline: Login with invalid credentials should show an error message
     Given I am on the Login page
     When I log in with "<username>" and "<password>"

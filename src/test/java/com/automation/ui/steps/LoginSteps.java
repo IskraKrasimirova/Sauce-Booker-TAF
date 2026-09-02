@@ -4,8 +4,6 @@ import com.automation.config.ConfigReader;
 import com.automation.ui.driver.DriverFactory;
 import com.automation.ui.pages.LoginPage;
 import com.automation.ui.pages.ProductsPage;
-import io.cucumber.java.PendingException;
-import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
