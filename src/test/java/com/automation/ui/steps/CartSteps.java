@@ -1,12 +1,11 @@
 package com.automation.ui.steps;
 
-import com.automation.ui.context.ContextConstants;
-import com.automation.ui.context.ScenarioContext;
+import com.automation.context.ScenarioContext;
+import com.automation.ui.utilities.ContextConstants;
 import com.automation.ui.driver.DriverFactory;
 import com.automation.ui.models.Product;
 import com.automation.ui.pages.CartPage;
 import com.automation.ui.pages.CheckoutInfoPage;
-import io.cucumber.java.PendingException;
 import io.cucumber.java.en.And;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;

@@ -1,4 +1,4 @@
-package com.automation.ui.context;
+package com.automation.context;
 
 import java.util.HashMap;
 import java.util.List;

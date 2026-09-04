@@ -1,4 +1,4 @@
-package com.automation.ui.context;
+package com.automation.ui.utilities;
 
 public final class ContextConstants {
     private ContextConstants() {
