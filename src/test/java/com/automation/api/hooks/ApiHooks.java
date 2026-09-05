@@ -8,9 +8,12 @@ import com.automation.context.ScenarioContext;
 import io.cucumber.java.After;
 import io.cucumber.java.Before;
 import io.restassured.response.Response;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.testng.Assert;
 
 public class ApiHooks {
+    private static final Logger logger = LoggerFactory.getLogger(ApiHooks.class);
     private final ScenarioContext scenarioContext;
     private final AuthClient authClient;
     private final BookingClient bookingClient;
@@ -51,6 +54,7 @@ public class ApiHooks {
 
         Response response = bookingClient.deleteBooking(bookingId, token);
 
-        System.out.println("Cleanup booking id: " + bookingId + ", status: " + response.statusCode());
+        logger.info("Cleanup booking id: {}, status: {}", bookingId, response.statusCode());
+        //System.out.println("Cleanup booking id: " + bookingId + ", status: " + response.statusCode());
     }
 }

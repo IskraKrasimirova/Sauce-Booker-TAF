@@ -4,12 +4,15 @@ import com.automation.config.ConfigReader;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.HashMap;
 import java.util.Map;
 
 public class DriverFactory {
-    private  static WebDriver driver;
+    private static final Logger logger = LoggerFactory.getLogger(DriverFactory.class);
+    private static WebDriver driver;
 
     private DriverFactory() {
 
@@ -18,6 +21,8 @@ public class DriverFactory {
     public static WebDriver createDriver() {
         if (driver == null) {
             String browser = ConfigReader.getSettings().ui.browser;
+
+            logger.info("Starting {} browser", browser);
 
             if (!browser.equalsIgnoreCase("chrome")) {
                 throw new IllegalArgumentException("Unsupported browser: " + browser);
@@ -52,6 +57,7 @@ public class DriverFactory {
 
     public static void closeDriver() {
         if (driver != null) {
+            logger.info("Closing browser");
             driver.quit();
             driver = null;
         }
