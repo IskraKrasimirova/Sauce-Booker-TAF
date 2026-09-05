@@ -15,5 +15,7 @@ public class Settings {
 
     public static class ApiSettings {
         public String baseUrl;
+        public String username;
+        public String password;
     }
 }

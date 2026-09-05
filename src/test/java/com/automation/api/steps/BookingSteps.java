@@ -8,16 +8,17 @@ import com.automation.api.models.BookingResponse;
 import com.automation.api.utilities.ApiContextConstants;
 import com.automation.api.utilities.SelectionHelper;
 import com.automation.context.ScenarioContext;
-import io.cucumber.java.PendingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
-import io.cucumber.java.en.Then;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 import org.testng.Assert;
 import org.testng.asserts.SoftAssert;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 
 import java.util.List;
+import java.util.Map;
 
 public class BookingSteps {
     private final ScenarioContext scenarioContext;
@@ -51,23 +52,114 @@ public class BookingSteps {
         Assert.assertTrue(selectedBookingId > 0, "Selected booking id should be greater than zero.");
     }
 
+    @Given("I request a booking with invalid id {string}")
+    public void iRequestABookingWithInvalidId(String bookingId) {
+        response = bookingClient.getBookingById(bookingId);
+        scenarioContext.set(ApiContextConstants.RESPONSE, response);
+    }
+
     @Given("I create a new booking with valid details")
     public void iCreateANewBookingWithValidDetails() {
         Booking booking = new BookingBuilder().build();
         scenarioContext.set(ApiContextConstants.BOOKING, booking);
 
         response = bookingClient.createBooking(booking);
+        scenarioContext.set(ApiContextConstants.RESPONSE, response);
+
+        BookingResponse bookingResponse = response.as(BookingResponse.class);
+        scenarioContext.set(ApiContextConstants.CREATED_BOOKING_ID, bookingResponse.getBookingid());
+    }
+
+    @Given("I create a new booking without the {string} field")
+    public void iCreateANewBookingWithoutTheField(String field) {
+        Booking booking = new BookingBuilder().build();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, Object> bookingPayload = objectMapper.convertValue(
+                booking,
+                new TypeReference<Map<String, Object>>() {}
+        );
+
+        bookingPayload.remove(field);
+
+        response = bookingClient.createBooking(bookingPayload);
+        scenarioContext.set(ApiContextConstants.RESPONSE, response);
+    }
+
+    @Given("I create a new booking with null value for the {string} field")
+    public void iCreateANewBookingWithNullValueForTheField(String field) {
+        Booking booking = new BookingBuilder().build();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+        Map<String, Object> bookingPayload = objectMapper.convertValue(
+                booking,
+                new TypeReference<Map<String, Object>>() {}
+        );
+
+        bookingPayload.put(field, null);
+
+        response = bookingClient.createBooking(bookingPayload);
+        scenarioContext.set(ApiContextConstants.RESPONSE, response);
+    }
+
+    @Given("I create a new booking without the {string} booking date field")
+    public void iCreateANewBookingWithoutTheBookingDateField(String field) {
+        Booking booking = new BookingBuilder().build();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        Map<String, Object> bookingPayload = objectMapper.convertValue(
+                booking,
+                new TypeReference<Map<String, Object>>() {}
+        );
+
+        Map<String, Object> bookingDates = objectMapper.convertValue(
+                bookingPayload.get("bookingdates"),
+                new TypeReference<Map<String, Object>>() {}
+        );
+
+        bookingDates.remove(field);
+        bookingPayload.put("bookingdates", bookingDates);
+
+        response = bookingClient.createBooking(bookingPayload);
+        scenarioContext.set(ApiContextConstants.RESPONSE, response);
+    }
+
+    @Given("I create a new booking with null value for the {string} booking date field")
+    public void iCreateANewBookingWithNullValueForTheBookingDateField(String field) {
+        Booking booking = new BookingBuilder().build();
+
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        Map<String, Object> bookingPayload = objectMapper.convertValue(
+                booking,
+                new TypeReference<Map<String, Object>>() {}
+        );
+
+        Map<String, Object> bookingDates = objectMapper.convertValue(
+                bookingPayload.get("bookingdates"),
+                new TypeReference<Map<String, Object>>() {}
+        );
+
+        bookingDates.put(field, null);
+        bookingPayload.put("bookingdates", bookingDates);
+
+        response = bookingClient.createBooking(bookingPayload);
+        scenarioContext.set(ApiContextConstants.RESPONSE, response);
+    }
+
+    @Given("I create a new booking without request body")
+    public void iCreateANewBookingWithoutRequestBody() {
+        response = bookingClient.createBookingWithoutBody();
+        scenarioContext.set(ApiContextConstants.RESPONSE, response);
     }
 
     @When("I request the selected booking by id")
     public void iRequestTheSelectedBookingById() {
         int selectedBookingId = scenarioContext.get(ApiContextConstants.SELECTED_BOOKING_ID, Integer.class);
         response = bookingClient.getBookingById(selectedBookingId);
-    }
 
-    @Then("the booking response status should be {int}")
-    public void theBookingResponseStatusShouldBe(int expectedStatusCode) {
-        Assert.assertEquals(response.statusCode(), expectedStatusCode, "Unexpected booking response status code.");
+        scenarioContext.set(ApiContextConstants.RESPONSE, response);
     }
 
     @And("the booking details should be returned")
