@@ -312,6 +312,9 @@ Given additional development time, the framework could be extended with:
   download functionality, including verification of the downloaded file and
   its content.
 
+- **Sorting validation** - extend the UI coverage to verify product sorting
+  by name and price in both ascending and descending order.
+
 - **API health check** - use the `/ping` endpoint before API test execution to
   distinguish service availability issues from test failures.
 
