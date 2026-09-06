@@ -31,7 +31,8 @@ Given the time limit, I prioritized a clear and maintainable framework and
 representative UI and API coverage over implementing every possible scenario.
 
 For UI testing, I focused on the main user flows and left additional coverage,
-such as product sorting and download validation, for future development.
+such as logout and navigation flows, product sorting, and download validation,
+for future development.
 
 For API testing, I left PATCH requests and the health-check endpoint for future
 coverage. I also did not extend some validation tests for POST and PUT requests
