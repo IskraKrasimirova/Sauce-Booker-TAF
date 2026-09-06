@@ -1,17 +1,17 @@
 # EnduroSat Test Automation Framework
 
-Test automation framework developed as part of the EnduroSat Automation
-QA technical assignment.
+A **BDD-first UI and API test automation framework** developed as part of the
+EnduroSat Automation QA technical assignment.
 
-The project covers both **UI** and **API** automated testing and is
-built with Java, Maven, TestNG, Cucumber, Selenium WebDriver, and
-RestAssured.
+The framework is built with Java, Maven, TestNG, Cucumber, Selenium WebDriver,
+and RestAssured, with a focus on clear separation of responsibilities,
+reusable components, and maintainable test scenarios.
 
 ## Applications Under Test
 
 ### UI
 
-**SauceDemo**  
+**SauceDemo**   
 https://www.saucedemo.com/
 
 SauceDemo is used for UI automation scenarios covering login, product interactions,
@@ -78,88 +78,96 @@ API automation is implemented against **Restful Booker** and covers:
 The API layer uses reusable client classes so that RestAssured calls are
 kept outside the Cucumber step definitions.
 
+## Architecture & Design
+
+The framework follows a **BDD-first approach** with a layered architecture
+that separates test scenarios, test logic, application interactions, and
+infrastructure concerns.
+
+- **BDD-first approach** - test scenarios are described in Gherkin and
+  implemented through Cucumber step definitions.
+
+- **Layered Test Architecture** - Features → Steps → Pages / API Clients →
+  Infrastructure.
+
+- **Dependency Injection with Cucumber PicoContainer** - used for constructor
+  injection of scenario-scoped dependencies such as `ScenarioContext`.
+
+- **Configuration Management** - runtime settings are externalized in
+  `appsettings.json`.
+
+- **Page Object Model** - UI locators and page-specific interactions are
+  encapsulated in Page Object classes.
+
+- **API Client Layer** - RestAssured requests are encapsulated in reusable API
+  clients instead of being called directly from step definitions.
+
+- **Builder Pattern** - used to create reusable and customizable API test data.
+
+- **Factory Pattern** - used for reusable UI test data creation.
+
+- **Shared Scenario Context** - scenario-specific data such as API responses,
+  booking IDs, authentication tokens, and selected products is shared between
+  steps without relying on global test state.
+
+- **Extensible Design** - UI and API layers are separated, making it easier to
+  add new pages, endpoints, browsers, and environments.
+
 ## Project Structure
 
-``` text
+```text
+reports
+└── cucumber-report.html    # Latest committed HTML test report
+
 src/test
 ├── java/com/automation
 │   ├── api
-│   │   ├── builders
-│   │   ├── clients
-│   │   ├── hooks
-│   │   ├── models
-│   │   ├── steps
-│   │   └── utilities
-│   ├── config
-│   │   └── models
-│   ├── context
-│   ├── runners
+│   │   ├── builders        # Test data builders
+│   │   ├── clients         # Reusable RestAssured API clients
+│   │   ├── hooks           # API setup and cleanup
+│   │   ├── models          # Request/response models
+│   │   ├── steps           # API step definitions
+│   │   └── utilities       # API constants and helpers
+│   │
+│   ├── config              # Configuration loading and models
+│   ├── context             # Shared ScenarioContext
+│   ├── runners             # Cucumber/TestNG test entry point
+│   │
 │   └── ui
-│       ├── driver
-│       ├── factories
-│       ├── hooks
-│       ├── models
-│       ├── pages
-│       ├── steps
-│       └── utilities
+│       ├── driver          # WebDriver creation and lifecycle
+│       ├── factories       # UI test data creation
+│       ├── hooks           # UI setup and teardown
+│       ├── models          # UI domain models
+│       ├── pages           # Page Object abstractions
+│       ├── steps           # UI step definitions
+│       └── utilities       # Waits and reusable UI helpers
+│
 └── resources
     ├── features
-    │   ├── api
-    │   └── ui
-    ├── appsettings.json
-    └── logback.xml
+    │   ├── api             # API Gherkin feature files
+    │   └── ui              # UI Gherkin feature files
+    ├── appsettings.json    # Runtime configuration
+    └── logback.xml         # Logging configuration
 ```
 
-## Framework Design
-
-The framework separates UI automation, API automation, configuration,
-shared scenario state, and test execution concerns.
-
-### UI Layer
-
-The UI implementation uses Page Object Model classes to keep element
-locators and page interactions separate from Cucumber step definitions.
-
-`DriverFactory` is responsible for WebDriver creation and cleanup.
-Browser type and headless execution are controlled through external
-configuration.
-
-Reusable explicit-wait based actions are provided through UI utilities.
-No fixed `Thread.sleep()` waits are used.
-
-### API Layer
-
-API requests are encapsulated in reusable client classes such as
-`AuthClient` and `BookingClient`. Cucumber step definitions use these
-clients instead of making raw RestAssured calls.
-
-Request and response data is represented by typed models.
-`BookingBuilder` and DataFaker are used to generate reusable dynamic
-booking data.
-
-API hooks handle authentication where required and clean up bookings
-created during scenarios.
-
-### Scenario Context
-
-`ScenarioContext` provides shared scenario-level state between Cucumber
-steps. It is used for values such as selected products, API responses,
-booking IDs, authentication tokens, and expected test data.
-
-### Configuration
+## Configuration
 
 Runtime configuration is externalized in:
 
-``` text
+```text
 src/test/resources/appsettings.json
 ```
 
 It contains settings for UI/API base URLs, browser, headless mode,
 explicit-wait timeout, and test credentials.
 
+Configuration values can be changed directly in `appsettings.json` before
+test execution. Environment-specific configuration files and runtime
+environment selection are considered as a future improvement.
+
 For example, headless execution can be enabled by changing:
 
-``` json
+```json
 "headless": true
 ```
 
@@ -175,7 +183,7 @@ Before running the tests, install:
 
 Verify the installations:
 
-``` bash
+```bash
 java -version
 mvn -version
 ```
@@ -186,25 +194,25 @@ Run the commands from the project root directory.
 
 ### Run all tests
 
-``` bash
+```bash
 mvn test
 ```
 
 ### Run API tests
 
-``` bash
+```bash
 mvn test "-Dcucumber.filter.tags=@api"
 ```
 
 ### Run UI tests
 
-``` bash
+```bash
 mvn test "-Dcucumber.filter.tags=@ui"
 ```
 
 ### Run smoke tests
 
-``` bash
+```bash
 mvn test "-Dcucumber.filter.tags=@smoke"
 ```
 
@@ -212,7 +220,7 @@ mvn test "-Dcucumber.filter.tags=@smoke"
 
 For example, run only API smoke scenarios:
 
-``` bash
+```bash
 mvn test "-Dcucumber.filter.tags=@api and @smoke"
 ```
 
@@ -227,6 +235,7 @@ Other Cucumber tag expressions can be created using `and`, `or`, and
 | `@api`            | API test suite                              |
 | `@smoke`          | Core smoke coverage                         |
 | `@regression`     | Regression coverage                         |
+| `@validation`     | UI validation scenarios                     |
 | `@negative`       | Negative API scenarios                      |
 | `@e2e`            | End-to-end scenarios                        |
 | `@auth`           | Scenarios requiring authenticated API setup |
@@ -237,18 +246,21 @@ Feature-specific tags such as `@login`, `@products`, `@checkout`,
 
 ## Test Reports
 
-Cucumber generates both HTML and JSON reports after execution:
+Cucumber generates HTML and JSON reports after test execution:
 
-``` text
+```text
 target/cucumber-report.html
 target/cucumber-report.json
 ```
 
-The HTML report is the primary human-readable execution report.
+In addition, the HTML report is generated in the `reports` directory:
 
-A generated full-suite HTML report is also included with the assignment
-deliverables so the latest complete execution can be reviewed without
-rerunning the tests.
+```text
+reports/cucumber-report.html
+```
+
+The report in the `reports` directory is included with the project so the
+latest committed test execution can be reviewed without rerunning the tests.
 
 ## Logging
 
@@ -272,42 +284,41 @@ validation.
 Dynamic booking and product data is also generated or selected at
 runtime where appropriate.
 
-## Notes
-
-The public demo APIs and websites used by this project may occasionally
-respond slowly or be temporarily unavailable. Such external availability
-is outside the framework's control.
-
-The framework intentionally focuses on readability, separation of
-responsibilities, reusable components, and maintainable test flows
-rather than unnecessary complexity.
-
 ## Future Improvements
 
 Given additional development time, the framework could be extended with:
 
-- **CI pipeline** – configure automated execution on pull requests and/or scheduled runs,
-  with separate UI and API suites.
+- **CI pipeline** - configure automated UI and API test execution on pull
+  requests and scheduled runs.
 
-- **Allure reporting in CI** – add richer reporting with history, attachments, failure
-  details, and published CI artifacts.
+- **Allure reporting in CI** - add richer reporting with test history,
+  attachments, and detailed failure information.
 
-- **Environment-specific configuration** – introduce configuration files such as
-  `appsettings.stage.json` and select the target environment at runtime.
+- **Environment-specific configuration** - introduce configuration files such
+  as `appsettings.stage.json` and allow the target environment to be selected
+  at runtime.
 
-- **API health check** – use the Restful Booker `/ping` endpoint before API execution
-  to detect service availability problems before running the test suite.
+- **Parallel execution** - evaluate parallel execution for independent scenarios
+  to reduce the overall suite execution time while keeping WebDriver and
+  scenario state thread-safe.
 
-- **PATCH endpoint coverage** – add automated tests for partial booking updates using
-  `PATCH /booking/{id}`, including authenticated and negative scenarios.
+- **Cross-browser execution** - extend WebDriver support beyond Chrome and
+  execute the UI test suite across multiple browsers.
 
-- **Extended API validation coverage** – add further boundary and business-rule
-  validation tests, particularly around booking dates, invalid formats, price values,
-  and inconsistent API validation behaviour observed during exploratory testing.
+- **Failure screenshots** - automatically capture screenshots when UI scenarios
+  fail and attach them to the test report.
 
-- **UI download validation** – extend the UI coverage to validate the order/download
-  functionality where applicable, including verification of the downloaded file.
+- **Download validation** - extend the UI coverage to validate the order
+  download functionality, including verification of the downloaded file and
+  its content.
 
-- **Parallel execution** – evaluate parallel execution for independent scenarios to
-  reduce the overall suite execution time while ensuring WebDriver and scenario state
-  remain thread-safe.
+- **API health check** - use the `/ping` endpoint before API test execution to
+  distinguish service availability issues from test failures.
+
+- **PATCH endpoint coverage** - add automated tests for partial booking updates,
+  including positive and negative scenarios.
+
+- **Extended API validation coverage** - add further boundary and business-rule
+  validation tests for cases such as past booking dates, checkout before
+  check-in, invalid data types for guest names, negative prices, and other
+  inconsistent validation behaviour observed during testing.

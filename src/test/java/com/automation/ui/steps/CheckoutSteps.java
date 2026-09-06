@@ -15,6 +15,7 @@ import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 public class CheckoutSteps {
@@ -85,11 +86,14 @@ public class CheckoutSteps {
             expectedItemTotal = PriceUtils.parsePrice(selectedProduct.getPrice());
         }
 
-        BigDecimal itemTotal = PriceUtils.parsePrice(checkoutOverviewPage.getItemTotal());
+        BigDecimal itemTotal = PriceUtils.parsePrice(checkoutOverviewPage.getItemTotal())
+                .setScale(2, RoundingMode.HALF_UP);;
         Assert.assertEquals(itemTotal, expectedItemTotal, "Item total is not correct.");
 
-        BigDecimal tax = PriceUtils.parsePrice(checkoutOverviewPage.getTax());
-        BigDecimal total = PriceUtils.parsePrice(checkoutOverviewPage.getTotalPrice());
+        BigDecimal tax = PriceUtils.parsePrice(checkoutOverviewPage.getTax())
+                .setScale(2, RoundingMode.HALF_UP);
+        BigDecimal total = PriceUtils.parsePrice(checkoutOverviewPage.getTotalPrice())
+                .setScale(2, RoundingMode.HALF_UP);
         BigDecimal expectedTotal = expectedItemTotal.add(tax);
 
         Assert.assertEquals(total, expectedTotal, "Order total is not correct.");
