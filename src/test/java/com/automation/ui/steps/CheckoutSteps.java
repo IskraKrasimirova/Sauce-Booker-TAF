@@ -21,9 +21,6 @@ import java.util.List;
 public class CheckoutSteps {
     private final ScenarioContext scenarioContext;
     private final WebDriver driver;
-    private final ProductsPage productsPage;
-    private final ProductDetailsPage productDetailsPage;
-    private final CartPage cartPage;
     private final CheckoutInfoPage checkoutInfoPage;
     private final CheckoutOverviewPage checkoutOverviewPage;
     private final CheckoutCompletePage checkoutCompletePage;
@@ -31,9 +28,6 @@ public class CheckoutSteps {
     public CheckoutSteps(ScenarioContext scenarioContext) {
         this.scenarioContext = scenarioContext;
         this.driver = DriverFactory.getDriver();
-        this.productsPage = new ProductsPage(driver);
-        this.productDetailsPage = new ProductDetailsPage(driver);
-        this.cartPage = new CartPage(driver);
         this.checkoutInfoPage = new CheckoutInfoPage(driver);
         this.checkoutOverviewPage = new CheckoutOverviewPage(driver);
         this.checkoutCompletePage = new CheckoutCompletePage(driver);
@@ -49,7 +43,8 @@ public class CheckoutSteps {
     public void iContinueToTheCheckoutOverview() {
         checkoutInfoPage.continueToCheckoutOverview();
 
-        Assert.assertTrue(checkoutOverviewPage.isAtCheckoutOverviewPage(), "Checkout Overview Page is not loaded");
+        Assert.assertTrue(checkoutOverviewPage.isAtCheckoutOverviewPage(),
+                "Checkout Overview Page is not loaded");
     }
 
     @Then("the checkout overview should contain the selected product")
@@ -66,8 +61,10 @@ public class CheckoutSteps {
         String itemPrice = checkoutOverviewPage.getItemPrice(overviewItem);
         String itemDescription = checkoutOverviewPage.getItemDescription(overviewItem);
 
-        Assert.assertEquals(itemPrice, selectedProductPrice, "Product price was not correct on the Checkout Overview page.");
-        Assert.assertEquals(itemDescription, selectedProductDescription, "Product description was not correct on the Checkout Overview page.");
+        Assert.assertEquals(itemPrice, selectedProductPrice,
+                "Product price was not correct on the Checkout Overview page.");
+        Assert.assertEquals(itemDescription, selectedProductDescription,
+                "Product description was not correct on the Checkout Overview page.");
     }
 
     @And("the order total should be correct")

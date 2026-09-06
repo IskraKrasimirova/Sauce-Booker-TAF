@@ -1,6 +1,5 @@
 package com.automation.api.clients;
 
-import com.automation.api.models.Booking;
 import com.automation.api.utilities.ApiEndpoints;
 import com.automation.config.ConfigReader;
 import io.restassured.RestAssured;

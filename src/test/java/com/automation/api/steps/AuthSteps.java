@@ -4,12 +4,9 @@ import com.automation.api.clients.AuthClient;
 import com.automation.api.models.AuthRequest;
 import com.automation.api.models.AuthResponse;
 import com.automation.api.utilities.ApiContextConstants;
-import com.automation.config.ConfigReader;
 import com.automation.context.ScenarioContext;
-import io.cucumber.java.PendingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.Given;
-import io.cucumber.java.en.When;
 import io.restassured.response.Response;
 import org.testng.Assert;
 

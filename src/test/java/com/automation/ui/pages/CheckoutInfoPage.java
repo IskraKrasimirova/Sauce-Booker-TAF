@@ -20,10 +20,6 @@ public class CheckoutInfoPage extends BasePage {
         this.navigationBar = new NavigationBar(driver);
     }
 
-    public NavigationBar getNavigationBar() {
-        return navigationBar;
-    }
-
     public void enterCheckoutInformation(CheckoutInfo checkoutInfo) {
         elementActions.enterText(firstNameInput, checkoutInfo.getFirstName());
         elementActions.enterText(lastNameInput, checkoutInfo.getLastName());
@@ -34,7 +30,7 @@ public class CheckoutInfoPage extends BasePage {
         driver.findElement(continueButton).click();
     }
 
-    public String getErrorMessage(){
+    public String getErrorMessage() {
         return elementActions.waitUntilVisible(errorMessage).getText();
     }
 

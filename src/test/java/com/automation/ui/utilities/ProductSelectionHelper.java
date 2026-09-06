@@ -18,13 +18,14 @@ public final class ProductSelectionHelper {
             throw new IllegalArgumentException("Number of indices must be between 1 and total products.");
         }
 
-        List<Integer> indices = new ArrayList<Integer>();
+        List<Integer> indices = new ArrayList<>();
 
         for (int i = 0; i < totalProducts; i++) {
             indices.add(i);
         }
 
         Collections.shuffle(indices);
+
         return indices.subList(0, numberOfIndices);
     }
 }

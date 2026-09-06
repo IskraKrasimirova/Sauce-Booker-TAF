@@ -4,9 +4,6 @@ import com.automation.ui.models.Product;
 import com.automation.ui.utilities.PageUrls;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
-
-import java.util.List;
 
 public class ProductDetailsPage extends BasePage {
     private final NavigationBar navigationBar;
@@ -21,10 +18,6 @@ public class ProductDetailsPage extends BasePage {
     public ProductDetailsPage(WebDriver driver) {
         super(driver);
         this.navigationBar = new NavigationBar(driver);
-    }
-
-    public NavigationBar getNavigationBar() {
-        return navigationBar;
     }
 
     public Product getProductDetails() {

@@ -4,7 +4,7 @@ import com.automation.ui.utilities.PageUrls;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class CheckoutCompletePage extends BasePage{
+public class CheckoutCompletePage extends BasePage {
     private final NavigationBar navigationBar;
     private final By checkoutHeader = By.xpath("//span[@data-test='title']");
     private final By completeHeader = By.xpath("//h2[@data-test='complete-header']");
@@ -15,14 +15,6 @@ public class CheckoutCompletePage extends BasePage{
     public CheckoutCompletePage(WebDriver driver) {
         super(driver);
         this.navigationBar = new NavigationBar(driver);
-    }
-
-    public NavigationBar getNavigationBar() {
-        return navigationBar;
-    }
-
-    public void goBackToProducts() {
-        elementActions.click(backToProductsButton);
     }
 
     public boolean isAtCheckoutCompletePage() {

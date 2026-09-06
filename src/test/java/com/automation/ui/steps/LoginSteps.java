@@ -43,11 +43,8 @@ public class LoginSteps {
 
     @Then("I should see the error message {string}")
     public void iShouldSeeTheErrorMessage(String expectedErrorMessage) {
-        Assert.assertEquals(
-                loginPage.getErrorMessage(),
-                expectedErrorMessage,
-                "Unexpected login error message."
-        );
+        Assert.assertEquals(loginPage.getErrorMessage(), expectedErrorMessage,
+                "Unexpected login error message.");
     }
 
     @Then("I should be redirected to the Products page")

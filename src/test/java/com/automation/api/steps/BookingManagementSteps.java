@@ -5,7 +5,6 @@ import com.automation.api.clients.BookingClient;
 import com.automation.api.models.Booking;
 import com.automation.api.utilities.ApiContextConstants;
 import com.automation.context.ScenarioContext;
-import io.cucumber.java.PendingException;
 import io.cucumber.java.en.And;
 import io.cucumber.java.en.When;
 import io.restassured.response.Response;

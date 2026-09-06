@@ -308,12 +308,15 @@ Given additional development time, the framework could be extended with:
 - **Failure screenshots** - automatically capture screenshots when UI scenarios
   fail and attach them to the test report.
 
-- **Download validation** - extend the UI coverage to validate the order
-  download functionality, including verification of the downloaded file and
-  its content.
+- **Logout and navigation coverage** - add logout validation and extend the UI
+  coverage for additional navigation flows.
 
 - **Sorting validation** - extend the UI coverage to verify product sorting
   by name and price in both ascending and descending order.
+
+- **Download validation** - extend the UI coverage to validate the order
+  download functionality, including verification of the downloaded file and
+  its content.
 
 - **API health check** - use the `/ping` endpoint before API test execution to
   distinguish service availability issues from test failures.

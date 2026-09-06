@@ -24,10 +24,6 @@ public class CartPage extends BasePage {
         this.navigationBar = new NavigationBar(driver);
     }
 
-    public NavigationBar getNavigationBar() {
-        return navigationBar;
-    }
-
     public void goToProductsPage() {
         driver.findElement(continueShoppingButton).click();
     }

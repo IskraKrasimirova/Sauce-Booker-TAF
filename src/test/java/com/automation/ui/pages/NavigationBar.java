@@ -3,7 +3,7 @@ package com.automation.ui.pages;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 
-public class NavigationBar extends BasePage{
+public class NavigationBar extends BasePage {
 
     private final By menuButton = By.id("react-burger-menu-btn");
     private final By cartLink = By.xpath("//a[@data-test='shopping-cart-link']");
@@ -13,15 +13,11 @@ public class NavigationBar extends BasePage{
         super(driver);
     }
 
-    public void openMenu(){
-        elementActions.click(menuButton);
-    }
-
-    public void openCart(){
+    public void openCart() {
         elementActions.click(cartLink);
     }
 
-    public boolean isDisplayed(){
+    public boolean isDisplayed() {
         return elementActions.waitUntilVisible(appLogo).isDisplayed()
                 && elementActions.waitUntilVisible(menuButton).isDisplayed()
                 && elementActions.waitUntilVisible(cartLink).isDisplayed();

@@ -8,13 +8,13 @@ import io.cucumber.java.Before;
 public class UiHooks {
 
     @Before("@ui")
-    public void setUp(){
+    public void setUp() {
         DriverFactory.createDriver();
         DriverFactory.getDriver().get(ConfigReader.getSettings().ui.baseUrl);
     }
 
     @After("@ui")
-    public void tearDown(){
+    public void tearDown() {
         DriverFactory.closeDriver();
     }
 }

@@ -7,7 +7,7 @@ import org.openqa.selenium.WebElement;
 
 import java.util.List;
 
-public class CheckoutOverviewPage extends BasePage{
+public class CheckoutOverviewPage extends BasePage {
     private final NavigationBar navigationBar;
     private final By checkoutHeader = By.xpath("//span[@data-test='title']");
     private final By cartList = By.xpath("//div[@data-test='cart-list']");
@@ -21,23 +21,13 @@ public class CheckoutOverviewPage extends BasePage{
     private final By tax = By.xpath("//div[@data-test='tax-label']");
     private final By totalPrice = By.xpath("//div[@data-test='total-label']");
 
-
-
     public CheckoutOverviewPage(WebDriver driver) {
         super(driver);
         this.navigationBar = new NavigationBar(driver);
     }
 
-    public NavigationBar getNavigationBar() {
-        return navigationBar;
-    }
-
     public void finishOrder() {
         driver.findElement(finishButton).click();
-    }
-
-    public void cancelOrder() {
-        driver.findElement(cancelButton).click();
     }
 
     public List<WebElement> getItems() {

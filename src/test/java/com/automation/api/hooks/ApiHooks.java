@@ -55,6 +55,5 @@ public class ApiHooks {
         Response response = bookingClient.deleteBooking(bookingId, token);
 
         logger.info("Cleanup booking id: {}, status: {}", bookingId, response.statusCode());
-        //System.out.println("Cleanup booking id: " + bookingId + ", status: " + response.statusCode());
     }
 }
